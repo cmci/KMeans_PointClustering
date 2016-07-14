@@ -7,6 +7,8 @@ from org.apache.commons.math3.ml.clustering import Clusterable, KMeansPlusPlusCl
 from java.util import ArrayList
 from jarray import array
 from ij import Macro
+from ij.gui import GenericDialog;
+
 
 # extract coordinates of white (255) pixels from stack
 # @return Python List of Lists (3D coordinate)
@@ -61,15 +63,23 @@ def core(imp):
 	return outimp
 	
 Verbose = False
-opt = Macro.getOptions()
-IJ.log(opt)
-optA = opt.split()
-Number_of_Cluster = int(optA[0])
-Iteration = int(optA[1])
+if IJ.isMacro():
+    opt = Macro.getOptions()
+    IJ.log(opt)
+    optA = opt.split()
+    Number_of_Cluster = int(optA[0])
+    Iteration = int(optA[1])
+else:
+   gd =  GenericDialog("KMean Points Clustering", IJ.getInstance())
+   gd.addNumericField("Expected Number of Clusters", 4, 0)
+   gd.addNumericField("Iterations", 10, 0)
+   gd.showDialog()
+   Number_of_Cluster = int(gd.getNextNumber())
+   Iteration = int(gd.getNextNumber())
 imp = IJ.getImage()
 outimp = core(imp)
 outimp.show()
-IJ.run("LUT... ", "open=/Users/miura/Dropbox/20140130_CellNetWorkBIAS/studentPackage/additional_packages/Random.lut");
+IJ.run(outimp, "glasbey inverted", "")
 		
 
 
