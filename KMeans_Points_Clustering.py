@@ -1,4 +1,4 @@
-# Kota Miura (miura@embl.de)
+# Kota Miura (miura@cmci.info)
 # Spatial k-means clustering
 # 20150325
 
@@ -64,7 +64,9 @@ def core(imp):
 	
 Verbose = False
 if IJ.isMacro():
-    opt = Macro.getOptions()
+    opt = getArgument()# ImageJ specific function Macro.getOptions()
+    if len(opt) == 0:
+        opt = OPT_PLACEHOLDER
     IJ.log(opt)
     optA = opt.split()
     Number_of_Cluster = int(optA[0])
